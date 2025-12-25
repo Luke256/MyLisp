@@ -32,6 +32,8 @@ func parseExpr(tokens []tokenizer.Tokener, pos int) (Exprer, int, error) {
 	switch tok := tokens[pos].(type) {
 	case tokenizer.NumberToken:
 		return &Number{Value: tok.Value}, pos + 1, nil
+	case tokenizer.StringToken:
+		return &String{Value: tok.Value}, pos + 1, nil
 	case tokenizer.SymbolToken:
 		return &Symbol{Name: tok.Value}, pos + 1, nil
 	case tokenizer.LParenToken:

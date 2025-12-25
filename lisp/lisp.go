@@ -33,6 +33,7 @@ func NewBox() *Box {
 	box.AddBuildIn("-", builtin.ArithmeticSubtract)
 	box.AddBuildIn("*", builtin.ArithmeticMultiply)
 	box.AddBuildIn("/", builtin.ArithmeticDivide)
+	box.AddBuildIn("println", builtin.Println)
 
 	return box
 }

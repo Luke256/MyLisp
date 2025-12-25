@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	var input = `(define x 10) (+ x 20)`
+	var input = `(println "Hello, World!")`
 
 	box := lisp.NewBox()
 	

@@ -93,5 +93,5 @@ func (b *Box) keyDefine(args []parser.Exprer) (value.Valuer, error) {
 
 	b.Register(nameSym.Name, val)
 
-	return value.Unit{}, nil
+	return &value.Unit{}, nil
 }

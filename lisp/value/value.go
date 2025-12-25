@@ -7,6 +7,7 @@ import (
 )
 
 type Valuer interface {
+	String() string
 }
 
 type SFunction func(args []Valuer) (Valuer, error)
@@ -64,4 +65,8 @@ func (bf *BuiltinFunction) String() string {
 
 type KeyWord struct {
 	Name string
+}
+
+func (kw *KeyWord) String() string {
+	return fmt.Sprintf("<keyword:%s>", kw.Name)
 }
