@@ -24,11 +24,14 @@ func main() {
 		return
 	}
 
+
 	exprs, err := parser.Parse(tokens)
 	if err != nil {
 		fmt.Println("Error parsing tokens:", err)
 		return
 	}
 
-	fmt.Println("Parsed expressions:", exprs)
+	for _, expr := range exprs {
+		fmt.Println(expr)
+	}
 }

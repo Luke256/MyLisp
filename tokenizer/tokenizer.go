@@ -41,9 +41,9 @@ type StringToken struct {
 
 func (LParenToken) Type() TokenType  { return TokenLParen }
 func (RParenToken) Type() TokenType  { return TokenRParen }
-func (s SymbolToken) Type() TokenType { return TokenSymbol }
-func (n NumberToken) Type() TokenType { return TokenNumber }
-func (s StringToken) Type() TokenType { return TokenString }
+func (SymbolToken) Type() TokenType { return TokenSymbol }
+func (NumberToken) Type() TokenType { return TokenNumber }
+func (StringToken) Type() TokenType { return TokenString }
 
 func isSpecialChar(ch byte) bool {
 	return ch == '(' || ch == ')' || ch == '"'
