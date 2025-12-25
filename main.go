@@ -7,8 +7,9 @@ import (
 
 func main() {
 	var input = `
-(define x (list 1 2 3 4 5))
-(car (cdr (cdr x)))
+(define a 10)
+(define b 10)
+(if (= a b) (println "a and b are equal") (println "a and b are not equal"))
 `
 
 	box := lisp.NewBox()

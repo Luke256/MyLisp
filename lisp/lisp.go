@@ -38,6 +38,10 @@ func NewBox() *Box {
 	box.AddBuildIn("car", builtin.Car)
 	box.AddBuildIn("cdr", builtin.Cdr)
 	box.AddBuildIn("list", builtin.List)
+	box.AddBuildIn("=", builtin.BooleanEqual)
+	box.AddBuildIn("and", builtin.BooleanAnd)
+	box.AddBuildIn("or", builtin.BooleanOr)
+	box.AddBuildIn("not", builtin.BooleanNot)
 
 	return box
 }

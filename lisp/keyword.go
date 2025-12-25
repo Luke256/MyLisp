@@ -10,6 +10,7 @@ import (
 func (b *Box) registerKeywords() {
 	b.vars["lambda"] = &value.KeyWord{Name: "lambda"}
 	b.vars["define"] = &value.KeyWord{Name: "define"}
+	b.vars["if"] = &value.KeyWord{Name: "if"}
 }
 
 func (b *Box) evalKeyword(keyVal *value.KeyWord, args []parser.Exprer) (value.Valuer, error) {
@@ -18,6 +19,8 @@ func (b *Box) evalKeyword(keyVal *value.KeyWord, args []parser.Exprer) (value.Va
 		return b.keyLambda(args)
 	case "define":
 		return b.keyDefine(args)
+	case "if":
+		return b.keyIf(args)
 	default:
 		return nil, fmt.Errorf("unknown keyword: %s", keyVal.Name)
 	}
@@ -93,5 +96,28 @@ func (b *Box) keyDefine(args []parser.Exprer) (value.Valuer, error) {
 
 	b.Register(nameSym.Name, val)
 
+	return &value.Unit{}, nil
+}
+
+// (if condition then else)
+func (b *Box) keyIf(args []parser.Exprer) (value.Valuer, error) {
+	if len(args) != 2 && len(args) != 3 {
+		return nil, fmt.Errorf("if expects 2 or 3 arguments, got %d", len(args))
+	}
+
+	condVal, err := b.evalExpr(args[0])
+	if err != nil {
+		return nil, err
+	}
+	condBool, ok := condVal.(*value.Boolean)
+	if !ok {
+		return nil, fmt.Errorf("if condition must be a boolean, got %q (%T)", condVal, condVal)
+	}
+
+	if condBool.Value {
+		return b.evalExpr(args[1])
+	} else if len(args) == 3 {
+		return b.evalExpr(args[2])
+	}
 	return &value.Unit{}, nil
 }
