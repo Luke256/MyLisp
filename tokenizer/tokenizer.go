@@ -27,8 +27,8 @@ type Tokener interface {
 	Type() TokenType
 }
 
-type LParenToken struct {}
-type RParenToken struct {}
+type LParenToken struct{}
+type RParenToken struct{}
 type SymbolToken struct {
 	Value string
 }
@@ -39,8 +39,8 @@ type StringToken struct {
 	Value string
 }
 
-func (LParenToken) Type() TokenType  { return TokenLParen }
-func (RParenToken) Type() TokenType  { return TokenRParen }
+func (LParenToken) Type() TokenType { return TokenLParen }
+func (RParenToken) Type() TokenType { return TokenRParen }
 func (SymbolToken) Type() TokenType { return TokenSymbol }
 func (NumberToken) Type() TokenType { return TokenNumber }
 func (StringToken) Type() TokenType { return TokenString }

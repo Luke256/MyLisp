@@ -2,36 +2,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/Luke256/mylisp/tokenizer"
-	"github.com/Luke256/mylisp/parser"
+	"github.com/Luke256/mylisp/lisp"
 )
 
-type Hoge interface {
-	int | string
-}
-
-type Fuga[T Hoge] struct {
-	Values []T
-}
-
 func main() {
-	var input = `(define (square x) (* x x))
-(print (square 5))`;
+	var input = `(define x 10) (+ x 20)`
 
-	tokens, err := tokenizer.Tokenize(input)
+	box := lisp.NewBox()
+	
+	result, err := box.Eval(input)
 	if err != nil {
-		fmt.Println("Error tokenizing input:", err)
+		fmt.Println("Error:", err)
 		return
 	}
 
-
-	exprs, err := parser.Parse(tokens)
-	if err != nil {
-		fmt.Println("Error parsing tokens:", err)
-		return
-	}
-
-	for _, expr := range exprs {
-		fmt.Println(expr)
-	}
+	fmt.Println("Result:", result)
 }
