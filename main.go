@@ -7,9 +7,8 @@ import (
 
 func main() {
 	var input = `
-(define a 10)
-(define b 10)
-(if (and (= a b) #t) (println "a and b are equal") (println "a and b are not equal"))
+(let ((x 10) (y (+ x 20)))
+  (+ x y))
 `
 
 	box := lisp.NewBox()

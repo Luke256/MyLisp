@@ -11,6 +11,7 @@ func (b *Box) registerKeywords() {
 	b.vars["lambda"] = &value.KeyWord{Name: "lambda"}
 	b.vars["define"] = &value.KeyWord{Name: "define"}
 	b.vars["if"] = &value.KeyWord{Name: "if"}
+	b.vars["let"] = &value.KeyWord{Name: "let"}
 }
 
 func (b *Box) evalKeyword(keyVal *value.KeyWord, args []parser.Exprer) (value.Valuer, error) {
@@ -21,6 +22,8 @@ func (b *Box) evalKeyword(keyVal *value.KeyWord, args []parser.Exprer) (value.Va
 		return b.keyDefine(args)
 	case "if":
 		return b.keyIf(args)
+	case "let":
+		return b.keyLet(args)
 	default:
 		return nil, fmt.Errorf("unknown keyword: %s", keyVal.Name)
 	}
@@ -120,4 +123,49 @@ func (b *Box) keyIf(args []parser.Exprer) (value.Valuer, error) {
 		return b.evalExpr(args[2])
 	}
 	return &value.Unit{}, nil
+}
+
+// (let ((var1 val1) (var2 val2) ...) body1 body2 ...)
+func (b *Box) keyLet(args []parser.Exprer) (value.Valuer, error) {
+	if len(args) < 1 {
+		return nil, fmt.Errorf("let expects at least 1 argument, got %d", len(args))
+	}
+
+	box := newChildBox(b)
+
+	bindings, ok := args[0].(*parser.List)
+	if !ok {
+		return nil, fmt.Errorf("let first argument must be a list of bindings, got %q (%T)", args[0], args[0])
+	}
+
+	for _, bindExpr := range bindings.Exprs {
+		bindPair, ok := bindExpr.(*parser.List)
+		if !ok || len(bindPair.Exprs) != 2 {
+			return nil, fmt.Errorf("let bindings must be lists of 2 elements, got %q (%T)", bindExpr, bindExpr)
+		}
+
+		varName, ok := bindPair.Exprs[0].(*parser.Symbol)
+		if !ok {
+			return nil, fmt.Errorf("let binding name must be a symbol, got %q (%T)", bindPair.Exprs[0], bindPair.Exprs[0])
+		}
+
+		evaledVal, err := b.evalExpr(bindPair.Exprs[1])
+		if err != nil {
+			return nil, err
+		}
+		
+		box.Register(varName.Name, evaledVal)
+	}
+
+	var result value.Valuer = &value.Unit{}
+	var err error
+	
+	for _, bodyExpr := range args[1:] {
+		result, err = box.evalExpr(bodyExpr)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return result, nil
 }
