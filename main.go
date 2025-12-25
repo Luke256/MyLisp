@@ -6,7 +6,10 @@ import (
 )
 
 func main() {
-	var input = `(println "Hello, World!")`
+	var input = `
+(define x (list 1 2 3 4 5))
+(car (cdr (cdr x)))
+`
 
 	box := lisp.NewBox()
 	

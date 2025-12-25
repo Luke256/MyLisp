@@ -70,3 +70,22 @@ type KeyWord struct {
 func (kw *KeyWord) String() string {
 	return fmt.Sprintf("<keyword:%s>", kw.Name)
 }
+
+// List : list
+
+type List struct {
+	A Valuer
+	B Valuer
+}
+
+func (l *List) String() string {
+	switch l.B.(type) {
+	case *Unit:
+		return fmt.Sprintf("(%s)", l.A.String())
+	case *List:
+		var b string = l.B.String()
+		return fmt.Sprintf("(%s %s)", l.A.String(), b[1:len(b)-1])
+	default:
+		return fmt.Sprintf("(%s . %s)", l.A.String(), l.B.String())
+	}
+}

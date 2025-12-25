@@ -34,6 +34,10 @@ func NewBox() *Box {
 	box.AddBuildIn("*", builtin.ArithmeticMultiply)
 	box.AddBuildIn("/", builtin.ArithmeticDivide)
 	box.AddBuildIn("println", builtin.Println)
+	box.AddBuildIn("cons", builtin.Cons)
+	box.AddBuildIn("car", builtin.Car)
+	box.AddBuildIn("cdr", builtin.Cdr)
+	box.AddBuildIn("list", builtin.List)
 
 	return box
 }
@@ -101,6 +105,9 @@ func (b *Box) evalExpr(expr parser.Exprer) (value.Valuer, error) {
 		}
 		return val, nil
 	case *parser.List:
+		if len(e.Exprs) == 0 {
+			return &value.Unit{}, nil
+		}
 		return b.evalCall(e)
 	default:
 		return nil, fmt.Errorf("unknown expression type: %T", expr)
