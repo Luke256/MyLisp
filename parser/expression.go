@@ -67,3 +67,18 @@ func (c *List) String() string {
 	sb.WriteString(")")
 	return sb.String()
 }
+
+// -------------------------------
+
+type Boolean struct {
+	Value bool
+}
+
+func (b *Boolean) exprNode() {}
+
+func (b *Boolean) String() string {
+	if b.Value {
+		return "#t"
+	}
+	return "#f"
+}

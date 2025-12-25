@@ -9,7 +9,7 @@ func main() {
 	var input = `
 (define a 10)
 (define b 10)
-(if (= a b) (println "a and b are equal") (println "a and b are not equal"))
+(if (and (= a b) #t) (println "a and b are equal") (println "a and b are not equal"))
 `
 
 	box := lisp.NewBox()

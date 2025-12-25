@@ -17,6 +17,7 @@ const (
 	TokenSymbol
 	TokenNumber
 	TokenString
+	TokenBoolean
 )
 
 var (
@@ -38,15 +39,19 @@ type NumberToken struct {
 type StringToken struct {
 	Value string
 }
+type BooleanToken struct {
+	Value bool
+}
 
-func (LParenToken) Type() TokenType { return TokenLParen }
-func (RParenToken) Type() TokenType { return TokenRParen }
-func (SymbolToken) Type() TokenType { return TokenSymbol }
-func (NumberToken) Type() TokenType { return TokenNumber }
-func (StringToken) Type() TokenType { return TokenString }
+func (LParenToken) Type() TokenType  { return TokenLParen }
+func (RParenToken) Type() TokenType  { return TokenRParen }
+func (SymbolToken) Type() TokenType  { return TokenSymbol }
+func (NumberToken) Type() TokenType  { return TokenNumber }
+func (StringToken) Type() TokenType  { return TokenString }
+func (BooleanToken) Type() TokenType { return TokenBoolean }
 
 func isSpecialChar(ch byte) bool {
-	return ch == '(' || ch == ')' || ch == '"'
+	return ch == '(' || ch == ')' || ch == '"' || ch == '#'
 }
 
 func Tokenize(input string) ([]Tokener, error) {
@@ -87,6 +92,20 @@ func Tokenize(input string) ([]Tokener, error) {
 				return nil, fmt.Errorf("%w: invalid number: %s", ErrSyntax, builder.String())
 			}
 			tokens = append(tokens, NumberToken{Value: int32(numValue)})
+		case ch == '#':
+			i++
+			if i >= len(input) {
+				return nil, fmt.Errorf("%w: unexpected end after #", ErrSyntax)
+			}
+
+			switch input[i] {
+			case 't':
+				tokens = append(tokens, BooleanToken{Value: true})
+			case 'f':
+				tokens = append(tokens, BooleanToken{Value: false})
+			default:
+				return nil, fmt.Errorf("%w: invalid boolean literal: #%c", ErrSyntax, input[i])
+			}
 		default:
 			builder.Reset()
 			for i < len(input) && !unicode.IsSpace(rune(input[i])) && !isSpecialChar(input[i]) {

@@ -109,7 +109,7 @@ func (kw *KeyWord) Equal(other Valuer) bool {
 	return kw.Name == otherKw.Name
 }
 
-// List : list
+// List : list -------------------------------
 
 type List struct {
 	A Valuer

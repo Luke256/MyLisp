@@ -102,6 +102,8 @@ func (b *Box) evalExpr(expr parser.Exprer) (value.Valuer, error) {
 		return &value.Number{Value: e.Value}, nil
 	case *parser.String:
 		return &value.String{Value: e.Value}, nil
+	case *parser.Boolean:
+		return &value.Boolean{Value: e.Value}, nil
 	case *parser.Symbol:
 		val, ok := b.Resolve(e.Name)
 		if !ok {
