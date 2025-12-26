@@ -43,7 +43,7 @@ func (b *Box) keyLambda(args []parser.Exprer) (value.Valuer, error) {
 
 	var argNames []string
 	for _, argExpr := range argListExpr.Exprs {
-		sym, ok := argExpr.(*parser.Symbol)
+		sym, ok := argExpr.(*parser.Ident)
 		if !ok {
 			return nil, fmt.Errorf("lambda argument names must be symbols, got %q (%T)", argExpr, argExpr)
 		}
@@ -70,14 +70,14 @@ func (b *Box) keyDefine(args []parser.Exprer) (value.Valuer, error) {
 			return nil, fmt.Errorf("define function name missing")
 		}
 
-		funcName, ok := listExpr.Exprs[0].(*parser.Symbol)
+		funcName, ok := listExpr.Exprs[0].(*parser.Ident)
 		if !ok {
 			return nil, fmt.Errorf("define function name must be a symbol, got %q (%T)", listExpr.Exprs[0], listExpr.Exprs[0])
 		}
 
 		lambdaExpr := &parser.List{
 			Exprs: []parser.Exprer{
-				&parser.Symbol{Name: "lambda"},
+				&parser.Ident{Name: "lambda"},
 				&parser.List{Exprs: listExpr.Exprs[1:]},
 				args[1],
 			},
@@ -87,7 +87,7 @@ func (b *Box) keyDefine(args []parser.Exprer) (value.Valuer, error) {
 		args[1] = lambdaExpr
 	}
 
-	nameSym, ok := args[0].(*parser.Symbol)
+	nameSym, ok := args[0].(*parser.Ident)
 	if !ok {
 		return nil, fmt.Errorf("define first argument must be a symbol, got %q (%T)", args[0], args[0])
 	}
@@ -144,7 +144,7 @@ func (b *Box) keyLet(args []parser.Exprer) (value.Valuer, error) {
 			return nil, fmt.Errorf("let bindings must be lists of 2 elements, got %q (%T)", bindExpr, bindExpr)
 		}
 
-		varName, ok := bindPair.Exprs[0].(*parser.Symbol)
+		varName, ok := bindPair.Exprs[0].(*parser.Ident)
 		if !ok {
 			return nil, fmt.Errorf("let binding name must be a symbol, got %q (%T)", bindPair.Exprs[0], bindPair.Exprs[0])
 		}
@@ -153,13 +153,13 @@ func (b *Box) keyLet(args []parser.Exprer) (value.Valuer, error) {
 		if err != nil {
 			return nil, err
 		}
-		
+
 		box.Register(varName.Name, evaledVal)
 	}
 
 	var result value.Valuer = &value.Unit{}
 	var err error
-	
+
 	for _, bodyExpr := range args[1:] {
 		result, err = box.evalExpr(bodyExpr)
 		if err != nil {

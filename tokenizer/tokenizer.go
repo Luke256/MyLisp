@@ -14,7 +14,7 @@ const (
 	_ TokenType = iota
 	TokenLParen
 	TokenRParen
-	TokenSymbol
+	TokenIdent
 	TokenNumber
 	TokenString
 	TokenBoolean
@@ -30,7 +30,7 @@ type Tokener interface {
 
 type LParenToken struct{}
 type RParenToken struct{}
-type SymbolToken struct {
+type ItentToken struct {
 	Value string
 }
 type NumberToken struct {
@@ -45,7 +45,7 @@ type BooleanToken struct {
 
 func (LParenToken) Type() TokenType  { return TokenLParen }
 func (RParenToken) Type() TokenType  { return TokenRParen }
-func (SymbolToken) Type() TokenType  { return TokenSymbol }
+func (ItentToken) Type() TokenType   { return TokenIdent }
 func (NumberToken) Type() TokenType  { return TokenNumber }
 func (StringToken) Type() TokenType  { return TokenString }
 func (BooleanToken) Type() TokenType { return TokenBoolean }
@@ -113,7 +113,7 @@ func Tokenize(input string) ([]Tokener, error) {
 				i++
 			}
 			i--
-			tokens = append(tokens, SymbolToken{Value: builder.String()})
+			tokens = append(tokens, ItentToken{Value: builder.String()})
 		}
 	}
 	return tokens, nil

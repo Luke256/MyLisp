@@ -36,8 +36,8 @@ func parseExpr(tokens []tokenizer.Tokener, pos int) (Exprer, int, error) {
 		return &String{Value: tok.Value}, pos + 1, nil
 	case tokenizer.BooleanToken:
 		return &Boolean{Value: tok.Value}, pos + 1, nil
-	case tokenizer.SymbolToken:
-		return &Symbol{Name: tok.Value}, pos + 1, nil
+	case tokenizer.ItentToken:
+		return &Ident{Name: tok.Value}, pos + 1, nil
 	case tokenizer.LParenToken:
 		pos++
 		if pos >= len(tokens) {

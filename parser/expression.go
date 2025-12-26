@@ -35,13 +35,13 @@ func (s *String) String() string {
 
 // -------------------------------
 
-type Symbol struct {
+type Ident struct {
 	Name string
 }
 
-func (s *Symbol) exprNode() {}
+func (s *Ident) exprNode() {}
 
-func (s *Symbol) String() string {
+func (s *Ident) String() string {
 	return s.Name
 }
 

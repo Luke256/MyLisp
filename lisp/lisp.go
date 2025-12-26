@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	ErrUndefinedSymbol = errors.New("undefined symbol")
+	ErrUndefinedIdent = errors.New("undefined identifier")
 )
 
 type Box struct {
@@ -104,10 +104,10 @@ func (b *Box) evalExpr(expr parser.Exprer) (value.Valuer, error) {
 		return &value.String{Value: e.Value}, nil
 	case *parser.Boolean:
 		return &value.Boolean{Value: e.Value}, nil
-	case *parser.Symbol:
+	case *parser.Ident:
 		val, ok := b.Resolve(e.Name)
 		if !ok {
-			return nil, fmt.Errorf("%w: %s", ErrUndefinedSymbol, e.Name)
+			return nil, fmt.Errorf("%w: %s", ErrUndefinedIdent, e.Name)
 		}
 		return val, nil
 	case *parser.List:
