@@ -43,6 +43,10 @@ func NewBox() *Box {
 	box.AddBuildIn("or", builtin.BooleanOr)
 	box.AddBuildIn("not", builtin.BooleanNot)
 	box.AddBuildIn("null?", builtin.NullP)
+	box.AddBuildIn("concat", builtin.Concat)
+	box.AddBuildIn("number-to-string", builtin.NumberToString)
+	box.AddBuildIn("string-to-number", builtin.Expt)
+	box.AddBuildIn("expt", builtin.Expt)
 
 	return box
 }
