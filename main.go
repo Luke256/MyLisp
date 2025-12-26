@@ -7,8 +7,9 @@ import (
 
 func main() {
 	var input = `
-(let ((x 10) (y (+ x 20)))
-  (+ x y))
+(define (fact n) (if (= n 0) 1 (* n (fact (- n 1)))))
+(define (fib n) (if (or (= n 0) (= n 1)) n (+ (fib (- n 1)) (fib (- n 2)))))
+(fib 35)
 `
 
 	box := lisp.NewBox()

@@ -59,3 +59,11 @@ func List(args []value.Valuer) (value.Valuer, error) {
 	current.B = &value.Unit{}
 	return head, nil
 }
+
+func NullP(args []value.Valuer) (value.Valuer, error) {
+	if len(args) != 1 {
+		return nil, fmt.Errorf("null? expects 1 argument, got %d", len(args))
+	}
+	_, isUnit := args[0].(*value.Unit)
+	return &value.Boolean{Value: isUnit}, nil
+}

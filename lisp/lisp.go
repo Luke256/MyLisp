@@ -42,6 +42,7 @@ func NewBox() *Box {
 	box.AddBuildIn("and", builtin.BooleanAnd)
 	box.AddBuildIn("or", builtin.BooleanOr)
 	box.AddBuildIn("not", builtin.BooleanNot)
+	box.AddBuildIn("null?", builtin.NullP)
 
 	return box
 }
